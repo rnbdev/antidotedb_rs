@@ -1,0 +1,14 @@
+[package]
+name = "antidotedb"
+version = "0.1.0"
+authors = ["Ranadeep Biswas <ranadip.bswas@gmail.com>"]
+edition = "2018"
+build = "src/build.rs"
+
+[dependencies]
+protobuf = "*"
+quick-protobuf = "*"
+byteorder = "*"
+
+[build-dependencies]
+protobuf-codegen-pure = "*"
