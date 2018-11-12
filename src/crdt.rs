@@ -1,6 +1,6 @@
 use super::antidote;
 
-use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
+use byteorder::{BigEndian, WriteBytesExt};
 
 pub trait Object {
     fn get_object(&self) -> antidote::ApbBoundObject;

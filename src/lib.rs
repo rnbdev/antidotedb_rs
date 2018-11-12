@@ -42,7 +42,7 @@ impl AntidoteDB {
 
         self.send_message(antidote::MessageCode::apbStartTransaction, transaction);
 
-        let (code, message) = self.readMessage();
+        let (code, message) = self.read_message();
         let message = message
             .downcast_ref::<antidote::ApbStartTransactionResp>()
             .expect("Error to StartTransactionResp");
@@ -70,7 +70,7 @@ impl AntidoteDB {
 
         self.send_message(antidote::MessageCode::apbReadObjects, read_objects);
 
-        let (code, message) = self.readMessage();
+        let (code, message) = self.read_message();
         let message = message
             .downcast::<antidote::ApbReadObjectsResp>()
             .expect("Error to ApbReadObjectsResp");
@@ -96,7 +96,7 @@ impl AntidoteDB {
 
         self.send_message(antidote::MessageCode::apbUpdateObjects, update_objects);
 
-        let (code, message) = self.readMessage();
+        let (code, message) = self.read_message();
         let message = message
             .downcast::<antidote::ApbOperationResp>()
             .expect("error to downcast to ApbOperationResp");
@@ -115,7 +115,7 @@ impl AntidoteDB {
 
         self.send_message(antidote::MessageCode::apbCommitTransaction, commit);
 
-        let (code, message) = self.readMessage();
+        let (_, message) = self.read_message();
         let message = message
             .downcast_ref::<antidote::ApbCommitResp>()
             .expect("error to downcast ApbCommitResp");
@@ -129,7 +129,7 @@ impl AntidoteDB {
 
         self.send_message(antidote::MessageCode::apbAbortTransaction, commit);
 
-        let (code, message) = self.readMessage();
+        let (_, message) = self.read_message();
         let message = message
             .downcast_ref::<antidote::ApbOperationResp>()
             .expect("error to downcast ApbOperationResp");
@@ -158,7 +158,7 @@ impl AntidoteDB {
         self.socket.write_all(&buffer).expect("couldn't write all");
     }
 
-    fn readMessage(&mut self) -> (antidote::MessageCode, Box<Any>) {
+    fn read_message(&mut self) -> (antidote::MessageCode, Box<Any>) {
         let msg_leng = self
             .socket
             .read_i32::<BigEndian>()
