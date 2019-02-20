@@ -1,4 +1,4 @@
-Rust client for [Antidote DB][1]
+# Rust client for [Antidote DB][1]
 
 It uses [Protobuf][2] to communicate an Antidote node.
 
