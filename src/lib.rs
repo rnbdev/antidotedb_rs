@@ -86,12 +86,11 @@ impl AntidoteDB {
 
     pub fn mult_update_in_transaction(
         &mut self,
-        operations: &[crdt::Operation],
+        apb_operations: &[antidote::ApbUpdateOp],
         t: &Transaction,
     ) -> Result<(), ()> {
         let mut update_objects = antidote::ApbUpdateObjects::new();
-        let apb_operations: Vec<_> = operations.iter().map(|x| x.get_operation()).collect();
-        update_objects.set_updates(RepeatedField::from_slice(&apb_operations));
+        update_objects.set_updates(RepeatedField::from_slice(apb_operations));
         update_objects.set_transaction_descriptor(t.id.clone());
 
         self.send_message(antidote::MessageCode::apbUpdateObjects, update_objects);
@@ -163,9 +162,9 @@ impl AntidoteDB {
             .socket
             .read_i32::<BigEndian>()
             .expect("error to read message length");
-        let msg_code = antidote::MessageCode::from_i32(
-            self.socket.read_u8().expect("error to read message code") as i32,
-        )
+        let msg_code = antidote::MessageCode::from_i32(i32::from(
+            self.socket.read_u8().expect("error to read message code"),
+        ))
         .expect("error to convert message code");
 
         let mut read_buffer = vec![0; msg_leng as usize - 1];
